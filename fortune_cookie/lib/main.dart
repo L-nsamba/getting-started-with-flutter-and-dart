@@ -29,7 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   String _currentFortune = "";
 
   final _fortuneList = [
@@ -44,42 +43,47 @@ class _MyHomePageState extends State<MyHomePage> {
     var random = Random();
     int fortune = random.nextInt(_fortuneList.length);
     setState(() {
-        _currentFortune = _fortuneList[fortune];  
+      _currentFortune = _fortuneList[fortune];
     });
 
     print(_currentFortune);
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Flutter Demo Home Page"),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      //   title: const Text("Flutter Demo Home Page"),
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Your fortune is:"),
             Text(
-              '${_currentFortune}',
-              style: Theme.of(context).textTheme.headlineMedium,
+              "Your fortune is:",
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              )),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  _currentFortune,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
             ),
+            ElevatedButton(onPressed: _randomFortune, child: Text('Get Fortune'))
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _randomFortune,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _randomFortune,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }
