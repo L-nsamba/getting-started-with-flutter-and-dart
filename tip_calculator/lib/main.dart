@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const TipCalculator(),
     );
@@ -44,17 +44,32 @@ class TipCalculator extends StatefulWidget {
 class _TipCalculatorState extends State<TipCalculator> {
   @override
   Widget build(BuildContext context) {
+    // print(context.widget.toString());
+    var theme = Theme.of(context);
+    // Add style
+    final style = theme.textTheme.titleMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+      fontWeight: FontWeight.bold,
+    );
+
     return Scaffold(
       appBar: AppBar(title: Text('Tip Calculator')),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(color: Colors.deepPurple, borderRadius: BorderRadius.circular(10)),
-            child: const Column(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
               children: [
-                Text("Total per person"),
-                Text("\$23.89"),
+                Text("Total per person", style: style),
+                Text("\$23.89", style: style.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                  fontSize: theme.textTheme.displaySmall!.fontSize,
+                )),
               ],
             ),
           ),
