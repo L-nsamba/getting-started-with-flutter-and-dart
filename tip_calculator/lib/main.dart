@@ -42,6 +42,23 @@ class TipCalculator extends StatefulWidget {
 }
 
 class _TipCalculatorState extends State<TipCalculator> {
+  int _personCount = 1;
+
+  // Methods
+  void increment() {
+    setState(() {
+      _personCount = _personCount + 1;
+    });
+  }
+
+  void decrement() {
+    setState(() {
+      if (_personCount > 0) {
+        _personCount = _personCount - 1;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(context.widget.toString());
@@ -96,6 +113,31 @@ class _TipCalculatorState extends State<TipCalculator> {
                     onChanged: (String value) {
                       print("Value: $value");
                     },
+                  ),
+                  // Split bill area
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Split', style: theme.textTheme.titleMedium),
+                      Row(
+                        children: [
+                          IconButton(
+                            color: theme.colorScheme.primary,
+                            onPressed: decrement,
+                            icon: Icon(Icons.remove),
+                          ),
+                          Text(
+                            "$_personCount",
+                            style: theme.textTheme.titleMedium,
+                          ),
+                          IconButton(
+                            color: theme.colorScheme.primary,
+                            onPressed: increment,
+                            icon: Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
