@@ -66,11 +66,39 @@ class _TipCalculatorState extends State<TipCalculator> {
             child: Column(
               children: [
                 Text("Total per person", style: style),
-                Text("\$23.89", style: style.copyWith(
-                  color: theme.colorScheme.onPrimary,
-                  fontSize: theme.textTheme.displaySmall!.fontSize,
-                )),
+                Text(
+                  "\$23.89",
+                  style: style.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                    fontSize: theme.textTheme.displaySmall!.fontSize,
+                  ),
+                ),
               ],
+            ),
+          ),
+          // Form
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: theme.colorScheme.primary, width: 2),
+              ),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.attach_money),
+                      labelText: 'Bill Amount',
+                    ),
+                    keyboardType: TextInputType.number,
+                    onChanged: (String value) {
+                      print("Value: $value");
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
