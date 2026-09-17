@@ -45,13 +45,19 @@ class _TipCalculatorState extends State<TipCalculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Tip Calculator'),
-      ),
+      appBar: AppBar(title: Text('Tip Calculator')),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Hello There"),
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(color: Colors.deepPurple, borderRadius: BorderRadius.circular(10)),
+            child: const Column(
+              children: [
+                Text("Total per person"),
+                Text("\$23.89"),
+              ],
+            ),
+          ),
         ],
       ),
     );
