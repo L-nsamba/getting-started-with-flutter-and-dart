@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tip_calculator/widgets/bill_amount.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
 
@@ -101,21 +102,17 @@ class _TipCalculatorState extends State<TipCalculator> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: theme.colorScheme.primary, width: 2),
               ),
               child: Column(
                 children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.attach_money),
-                      labelText: 'Bill Amount',
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (String value) {
-                      print("Value: $value");
+                  BillAmountField(
+                    billAmount: "100",
+                    onChanged: (value) {
+                      print("Amount: $value");
                     },
                   ),
                   // Split bill area
