@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tip_calculator/widgets/bill_amount.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
+import 'package:tip_calculator/widgets/tip_row.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
+import 'package:tip_calculator/widgets/total_per_person.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,8 +48,15 @@ class TipCalculator extends StatefulWidget {
 
 class _TipCalculatorState extends State<TipCalculator> {
   int _personCount = 1;
-
   double _tipPercentage = 0.0;
+  double _billTotal = 0.0;
+  double totalPerPerson() {
+    return ((_billTotal * _tipPercentage) + (_billTotal)) / _personCount;
+  }
+
+  double totalTip() {
+    return ((_billTotal * _tipPercentage));
+  }
 
   // Methods
   void increment() {
@@ -58,7 +67,7 @@ class _TipCalculatorState extends State<TipCalculator> {
 
   void decrement() {
     setState(() {
-      if (_personCount > 0) {
+      if (_personCount > 1) {
         _personCount = _personCount - 1;
       }
     });
@@ -68,6 +77,8 @@ class _TipCalculatorState extends State<TipCalculator> {
   Widget build(BuildContext context) {
     // print(context.widget.toString());
     var theme = Theme.of(context);
+    double total = totalPerPerson();
+    double totalT = totalTip();
     // Add style
     final style = theme.textTheme.titleMedium!.copyWith(
       color: theme.colorScheme.onPrimary,
@@ -79,25 +90,7 @@ class _TipCalculatorState extends State<TipCalculator> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.inversePrimary,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                Text("Total per person", style: style),
-                Text(
-                  "\$23.89",
-                  style: style.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                    fontSize: theme.textTheme.displaySmall!.fontSize,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          TotalPerPerson(style: style, total: total, theme: theme),
           // Form
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -110,9 +103,11 @@ class _TipCalculatorState extends State<TipCalculator> {
               child: Column(
                 children: [
                   BillAmountField(
-                    billAmount: "100",
+                    billAmount: _billTotal.toString(),
                     onChanged: (value) {
-                      print("Amount: $value");
+                      setState(() {
+                        _billTotal = double.parse(value);
+                      });
                     },
                   ),
                   // Split bill area
@@ -129,13 +124,7 @@ class _TipCalculatorState extends State<TipCalculator> {
                     ],
                   ),
                   // Tip Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Tip', style: theme.textTheme.titleMedium),
-                      Text("\$20"),
-                    ],
-                  ),
+                  TipRow(theme: theme, totalT: totalT),
 
                   // Slider Text
                   Text("${(_tipPercentage * 100).round()}%"),
