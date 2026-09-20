@@ -1,3 +1,4 @@
+import 'package:class_activity1/screens/home.dart';
 import 'package:flutter/material.dart';
 
 // define entry
@@ -11,6 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return MaterialApp(
+      home: RollDice(),
+    );
   }
 }
