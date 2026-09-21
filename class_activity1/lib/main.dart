@@ -1,4 +1,3 @@
-import 'package:class_activity1/screens/home.dart';
 import 'package:class_activity1/screens/layoutpractice.dart';
 import 'package:flutter/material.dart';
 
