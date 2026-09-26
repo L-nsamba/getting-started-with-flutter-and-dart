@@ -1,4 +1,4 @@
-import 'package:counter_provider/providers/CounterModel.dart';
+import 'package:counter_provider/providers/counter_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
