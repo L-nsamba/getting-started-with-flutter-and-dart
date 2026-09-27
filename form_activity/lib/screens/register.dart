@@ -9,6 +9,10 @@ class RegisterScreen extends StatefulWidget {
 
 enum Gender { Male, Female }
 
+bool machineLearningSelected = false;
+bool fullStackSelected = false;
+bool mobileApplicationSelected = false;
+
 class _RegisterScreenState extends State<RegisterScreen> {
   Gender? _selectedgender = .Female;
   @override
@@ -26,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       body: Form(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               Row(
@@ -53,16 +57,86 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 15.0),
-              Row(children: [Text("Gender"), SizedBox(width: 20.0)]),
-              RadioGroup<Gender>(
-                groupValue: _selectedgender,
-                onChanged: (Gender? value) {
-                  setState(() {
-                    _selectedgender = value;
-                  });
-                },
-                child: Row(children: [],),
+              SizedBox(height: 20.0),
+              Row(
+                children: [
+                  Text("Sex"),
+                  SizedBox(width: 50.0),
+
+                  RadioGroup<Gender>(
+                    groupValue: _selectedgender,
+                    onChanged: (Gender? value) {
+                      setState(() {
+                        _selectedgender = value;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Radio<Gender>(value: Gender.Male),
+                        Text("Male"),
+
+                        Radio<Gender>(value: Gender.Female),
+                        Text("Female"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.0),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Courses"),
+
+                  SizedBox(width: 80.0),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: machineLearningSelected,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                machineLearningSelected = value ?? false;
+                              });
+                            },
+                          ),
+                          Text("Machine Learning"),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: mobileApplicationSelected,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                mobileApplicationSelected = value ?? false;
+                              });
+                            },
+                          ),
+                          Text("Mobile App Dev"),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: fullStackSelected,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                fullStackSelected = value ?? false;
+                              });
+                            },
+                          ),
+                          Text("Full stack"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
