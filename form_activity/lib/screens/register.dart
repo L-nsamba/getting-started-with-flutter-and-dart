@@ -13,6 +13,8 @@ bool machineLearningSelected = false;
 bool fullStackSelected = false;
 bool mobileApplicationSelected = false;
 
+double tuition = 0;
+
 class _RegisterScreenState extends State<RegisterScreen> {
   Gender? _selectedgender = .Female;
   @override
@@ -34,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             children: [
               Row(
+                // Text Form Field
                 children: [
                   Text("Username"),
                   SizedBox(width: 20.0),
@@ -44,6 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
+
+              // Text Form Field
               SizedBox(height: 15.0),
               Row(
                 children: [
@@ -57,6 +62,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
+
+              // Radio button
               SizedBox(height: 20.0),
               Row(
                 children: [
@@ -82,6 +89,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
+
+              // Checkboxes
               SizedBox(height: 20.0),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,6 +144,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ],
                       ),
                     ],
+                  ),
+                ],
+              ),
+
+              // Slider
+              SizedBox(height: 20.0),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Tuition"),
+
+                  Slider(
+                    value: tuition,
+                    min: 0,
+                    max: 100,
+                    onChanged: (double value) {
+                      setState(() {
+                        tuition = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+
+              // Buttons
+              SizedBox(height: 20.0),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber,
+                      foregroundColor: Colors.black,
+                    ),
+                    child: Text("Submit"),
+                  ),
+
+                  SizedBox(width: 20.0),
+
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
+                    child: Text("Clear"),
                   ),
                 ],
               ),
