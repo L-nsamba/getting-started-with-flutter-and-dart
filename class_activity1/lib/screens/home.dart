@@ -1,3 +1,4 @@
+import 'package:class_activity1/screens/layoutpractice.dart';
 import 'package:flutter/material.dart';
 
 import '../logic/randomval.dart';
@@ -33,7 +34,7 @@ class _RollDiceState extends State<RollDice> {
                 ),
                 onPressed: () {
                   setState(() {
-                  diceNumber = generateNumber();
+                    diceNumber = generateNumber();
                   });
                 },
                 child: Text("Roll Dice", style: TextStyle(fontSize: 34.0)),
@@ -41,6 +42,14 @@ class _RollDiceState extends State<RollDice> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigator.push(context, MaterialPageRoute(builder: (context) =>  DiceGrid()));
+
+          Navigator.pushNamed(context, "/dicegrid");
+        },
+        child: Icon(Icons.skip_next),
       ),
     );
   }

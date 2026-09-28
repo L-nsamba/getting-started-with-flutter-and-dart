@@ -24,6 +24,13 @@ class DiceGrid extends StatelessWidget {
           Image.asset("images/dice-6.png"),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigator.pop(context);
+          Navigator.pushNamed(context, "/");
+        },
+        child: Icon(Icons.skip_previous),
+      ),
     );
   }
 }
