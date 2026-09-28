@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tip_calculator/providers/theme_provider.dart';
 import 'package:tip_calculator/providers/tip_calculator_model.dart';
 import 'package:tip_calculator/widgets/bill_amount.dart';
 import 'package:tip_calculator/widgets/person_counter.dart';
 import 'package:tip_calculator/widgets/tip_row.dart';
 import 'package:tip_calculator/widgets/tip_slider.dart';
+import 'package:tip_calculator/widgets/toggle_theme_button.dart';
 import 'package:tip_calculator/widgets/total_per_person.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => TipCalculatorModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => TipCalculatorModel(),
+        ),
+
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -22,11 +30,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return MaterialApp(  
       title: 'Tip Calculator',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: themeProvider.currentTheme,
       home: const TipCalculator(),
     );
   }
@@ -47,6 +54,7 @@ class _TipCalculatorState extends State<TipCalculator> {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<TipCalculatorModel>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     var theme = Theme.of(context);
     // Add style
     final style = theme.textTheme.titleMedium!.copyWith(
@@ -55,7 +63,10 @@ class _TipCalculatorState extends State<TipCalculator> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Tip Calculator')),
+      appBar: AppBar(
+        title: Text('Tip Calculator'),
+        actions: [ToggleThemeButton()],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -101,7 +112,11 @@ class _TipCalculatorState extends State<TipCalculator> {
                     ],
                   ),
                   // Tip Section
-                  TipRow(theme: theme, billTotal: model.billTotal, percentage: model.tipPercentage,),
+                  TipRow(
+                    theme: theme,
+                    billTotal: model.billTotal,
+                    percentage: model.tipPercentage,
+                  ),
 
                   // Slider Text
                   Text("${(model.tipPercentage * 100).round()}%"),
