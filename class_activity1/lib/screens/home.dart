@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../logic/randomval.dart';
 
 class RollDice extends StatefulWidget {
-  const new({super.key});
+  const RollDice({super.key});
 
   @override
   State<RollDice> createState() => _RollDiceState();
@@ -12,7 +12,14 @@ class RollDice extends StatefulWidget {
 
 class _RollDiceState extends State<RollDice> {
   int diceNumber = 1;
+  String userName = ''; 
+
+
   @override
+    void didChangeDependencies() {
+    super.didChangeDependencies();
+    userName = (ModalRoute.of(context)?.settings.arguments as String?) ?? 'Player';
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple,
@@ -23,7 +30,7 @@ class _RollDiceState extends State<RollDice> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Let's Play",
+                "Welcome $userName! Lets Play",
                 style: TextStyle(fontSize: 34.0, color: Colors.white),
               ),
               Image.asset("images/dice-$diceNumber.png"),
@@ -47,9 +54,9 @@ class _RollDiceState extends State<RollDice> {
         onPressed: () {
           // Navigator.push(context, MaterialPageRoute(builder: (context) =>  DiceGrid()));
 
-          Navigator.pushNamed(context, "/dicegrid");
+          Navigator.pushNamed(context, "/");
         },
-        child: Icon(Icons.skip_next),
+        child: Icon(Icons.skip_previous),
       ),
     );
   }

@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/" ,
       routes: {
-        "/" : (context)=> RollDice(),
-        "/dicegrid" : (context) => DiceGrid(),
+        "/" : (context)=> DiceGrid(),
+        "/rolldice" : (context) => RollDice(),
       },
       // home:  DiceGrid(),
     );
