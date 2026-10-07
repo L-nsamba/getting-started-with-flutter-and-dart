@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:form_activity/screens/register.dart';
+// import 'package:practice_input/screens/login.dart';
 
 
-void main(){
-  runApp(RegistrationForm());
-
+void main() {
+ runApp(const MyApp());
 }
 
-// root of the application
-class RegistrationForm extends StatelessWidget {
-  const RegistrationForm({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: RegisterScreen(),
-    );
-  }
+class MyApp extends StatelessWidget {
+ const MyApp({super.key});
+
+
+ // This widget is the root of your application.
+ @override
+ Widget build(BuildContext context) {
+   return MaterialApp(
+     title: 'Flutter Demo',
+     theme: ThemeData(
+       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+     ),
+     home: FormScreen(),
+   );
+ }
 }

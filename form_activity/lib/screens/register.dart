@@ -1,199 +1,241 @@
 import 'package:flutter/material.dart';
+import 'package:form_activity/utils/validators.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const new({super.key});
-
+class FormScreen extends StatefulWidget {
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  _FormScreenState createState() => _FormScreenState();
 }
 
-enum Gender { Male, Female }
+class _FormScreenState extends State<FormScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phonenumberController = TextEditingController();
 
-bool machineLearningSelected = false;
-bool fullStackSelected = false;
-bool mobileApplicationSelected = false;
+  String gender = 'Male';
+  List<String> selectedCourses = [];
+  double tuition = 0;
 
-double tuition = 0;
+  String? _courseError;
+  String? _tuitionError;
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  Gender? _selectedgender = .Female;
+  void _submitForm() {
+    final isFormValid = _formKey.currentState!.validate();
+    final courseError = Validators.courseValidator(selectedCourses);
+    final tuitionError = Validators.tuitionValidator(tuition);
+
+    setState(() {
+      _courseError = courseError;
+      _tuitionError = tuitionError;
+    });
+
+    if (isFormValid && courseError == null && tuitionError == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Form Submitted")));
+    }
+  }
+
+  void _clearForm() {
+    _formKey.currentState!.reset();
+    _usernameController.clear();
+    _passwordController.clear();
+    _phonenumberController.clear();
+
+    setState(() {
+      gender = 'Male';
+      selectedCourses.clear();
+      tuition = 0;
+      _courseError = null;
+      _tuitionError = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey,
         title: Text(
-          "Welcome back!!!",
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          'Welcome Back!!!',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        toolbarHeight: 70,
+        backgroundColor: Colors.grey,
+        toolbarHeight: 70.0,
       ),
-
-      body: Form(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Row(
-                // Text Form Field
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                shrinkWrap: true,
                 children: [
-                  Text("Username"),
-                  SizedBox(width: 20.0),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(border: OutlineInputBorder()),
+                  // Email
+                  Text("Email", style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextFormField(
+                    controller: _emailController,
+                    validator: Validators.emailValidator,
+                  ),
+
+                  // Username
+                  SizedBox(height: 16),
+                  Text(
+                    "Username",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _usernameController,
+                    validator: Validators.usernameValidator,
+                  ),
+                  SizedBox(height: 16),
+
+                  // TODO: add a field for collecting input from users below
+                  // Phone Number
+                  Text(
+                    "Phone Number",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: _phonenumberController,
+                    validator: Validators.phoneNumberValidator,
+                  ),
+
+                  // Password
+                  SizedBox(height: 16),
+                  Text(
+                    "Password",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    validator: Validators.passwordValidator,
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.remove_red_eye_outlined),
                     ),
                   ),
-                ],
-              ),
 
-              // Text Form Field
-              SizedBox(height: 15.0),
-              Row(
-                children: [
-                  Text("Password"),
-                  SizedBox(width: 20.0),
-                  Expanded(
-                    child: TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(border: OutlineInputBorder()),
-                    ),
-                  ),
-                ],
-              ),
-
-              // Radio button
-              SizedBox(height: 20.0),
-              Row(
-                children: [
-                  Text("Sex"),
-                  SizedBox(width: 50.0),
-
-                  RadioGroup<Gender>(
-                    groupValue: _selectedgender,
-                    onChanged: (Gender? value) {
-                      setState(() {
-                        _selectedgender = value;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Radio<Gender>(value: Gender.Male),
-                        Text("Male"),
-
-                        Radio<Gender>(value: Gender.Female),
-                        Text("Female"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              // Checkboxes
-              SizedBox(height: 20.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Courses"),
-
-                  SizedBox(width: 80.0),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  // Gender
+                  SizedBox(height: 16),
+                  Text("Sex", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: machineLearningSelected,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                machineLearningSelected = value ?? false;
-                              });
-                            },
-                          ),
-                          Text("Machine Learning"),
-                        ],
+                      Radio(
+                        value: 'Male',
+                        groupValue: gender,
+                        onChanged: (value) => setState(() => gender = value!),
                       ),
-
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: mobileApplicationSelected,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                mobileApplicationSelected = value ?? false;
-                              });
-                            },
-                          ),
-                          Text("Mobile App Dev"),
-                        ],
+                      Text("Male"),
+                      Radio(
+                        value: 'Female',
+                        groupValue: gender,
+                        onChanged: (value) => setState(() => gender = value!),
                       ),
+                      Text("Female"),
+                    ],
+                  ),
 
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: fullStackSelected,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                fullStackSelected = value ?? false;
-                              });
-                            },
+                  // Courses
+                  SizedBox(height: 16),
+                  Text(
+                    "Courses",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Column(
+                    children: [
+                      CheckboxListTile(
+                        title: Text("Machine Learning"),
+                        value: selectedCourses.contains("ML"),
+                        onChanged: (val) {
+                          setState(() {
+                            val!
+                                ? selectedCourses.add("ML")
+                                : selectedCourses.remove("ML");
+                          });
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: Text("Full stack"),
+                        value: selectedCourses.contains("FS"),
+                        onChanged: (val) {
+                          setState(() {
+                            val!
+                                ? selectedCourses.add("FS")
+                                : selectedCourses.remove("FS");
+                          });
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: Text("Mobile application"),
+                        value: selectedCourses.contains("MA"),
+                        onChanged: (val) {
+                          setState(() {
+                            val!
+                                ? selectedCourses.add("MA")
+                                : selectedCourses.remove("MA");
+                          });
+                        },
+                      ),
+                      if (_courseError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0, top: 4),
+                          child: Text(
+                            _courseError!,
+                            style: TextStyle(color: Colors.red, fontSize: 12),
                           ),
-                          Text("Full stack"),
-                        ],
+                        ),
+                    ],
+                  ),
+
+                  // Tuition
+                  SizedBox(height: 16),
+                  Text(
+                    "Tuition",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Slider(
+                    value: tuition,
+                    min: 0,
+                    max: 100,
+                    activeColor: Colors.green,
+                    onChanged: (value) => setState(() => tuition = value),
+                  ),
+                  if (_tuitionError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 4),
+                      child: Text(
+                        _tuitionError!,
+                        style: TextStyle(color: Colors.red, fontSize: 12),
+                      ),
+                    ),
+
+                  // Buttons
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[200],
+                        ),
+                        onPressed: _submitForm,
+                        child: Text("Submit"),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        onPressed: _clearForm,
+                        child: Text("Clear"),
                       ),
                     ],
                   ),
                 ],
               ),
-
-              // Slider
-              SizedBox(height: 20.0),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Tuition"),
-
-                  Slider(
-                    value: tuition,
-                    min: 0,
-                    max: 100,
-                    onChanged: (double value) {
-                      setState(() {
-                        tuition = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-
-              // Buttons
-              SizedBox(height: 20.0),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.black,
-                    ),
-                    child: Text("Submit"),
-                  ),
-
-                  SizedBox(width: 20.0),
-
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
-                    child: Text("Clear"),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
