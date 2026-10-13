@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/networks/network.dart';
 import 'package:reader_tracker/networks/secrets.dart';
+import 'package:reader_tracker/pages/book_details.dart';
 import 'package:reader_tracker/pages/favorites_screen.dart';
 import 'package:reader_tracker/pages/home_screen.dart';
 import 'package:reader_tracker/pages/saved_screen.dart';
@@ -21,6 +22,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.orangeAccent)),
+      initialRoute: '/',
+      routes: {
+        '/home': (context) => HomeScreen(),
+        '/saved': (context) => SavedScreen(),
+        '/favorites': (context) => FavoritesScreen(),
+        '/details': (context) => BookDetailsScreen(),
+      },
       home: const MyHomePage(),
     );
   }
