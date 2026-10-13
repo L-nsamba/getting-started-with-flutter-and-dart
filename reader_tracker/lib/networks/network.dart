@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/networks/secrets.dart';
 
 import 'dart:convert';
@@ -6,7 +7,7 @@ import 'dart:convert';
 class Network {
   static const String _baseUrl = 'https://www.googleapis.com/books/v1/volumes';
 
-  Future<Map<String, dynamic>?> searchBooks(String query) async {
+  Future<List<Book>> searchBooks(String query) async {
     final apiKey = Secrets.get("GOOGLE_BOOKS_API_KEY");
     final url = Uri.parse(
       'https://www.googleapis.com/books/v1/volumes?q=$query&key=$apiKey',
@@ -14,9 +15,18 @@ class Network {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      return json.decode(response.body) as Map<String, dynamic>;
+      var data = json.decode(response.body);
+
+      if (data['items'] != null && data['items'] is List) {
+        List<Book> books = (data['items'] as List<dynamic>)
+            .map((book) => Book.fromJson(book as Map<String, dynamic>))
+            .toList();
+        return books;
+      } else {
+        return [];
+      }
     } else {
-      return null;
+      throw Exception('Failed to load books');
     }
   }
 }

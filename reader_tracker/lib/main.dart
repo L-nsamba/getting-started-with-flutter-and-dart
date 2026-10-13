@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/networks/network.dart';
 import 'package:reader_tracker/networks/secrets.dart';
 import 'package:reader_tracker/pages/favorites_screen.dart';
@@ -35,26 +36,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
-  final Network network = Network();
-
-  Future<void> _searchBooks(String query) async {
-    var data = await network.searchBooks(query);
-    if (data != null) {
-      print(data);
-    }
-  }
-
   final List<Widget> _screens = [
     const HomeScreen(),
     const SavedScreen(),
     const FavoritesScreen(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _searchBooks('Android');
-  }
 
   @override
   Widget build(BuildContext context) {
