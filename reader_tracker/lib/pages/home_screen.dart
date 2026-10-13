@@ -52,19 +52,65 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
+            // Expanded(
+            //   child: SizedBox(
+            //     width: double.infinity,
+            //     child: ListView.builder(
+            //       itemCount: _books.length,
+            //       itemBuilder: (context, index) {
+            //         Book book = _books[index];
+            //         return ListTile(
+            //           title: Text(book.title),
+            //           subtitle: Text(book.authors.join(', &') ?? ''),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
             Expanded(
-              child: Container(
-                width: double.infinity,
-                child: ListView.builder(
-                  itemCount: _books.length,
-                  itemBuilder: (context, index) {
-                    Book book = _books[index];
-                    return ListTile(
-                      title: Text(book.title),
-                      subtitle: Text(book.authors.join(', &') ?? ''),
-                    );
-                  },
+              child: GridView.builder(
+                itemCount: _books.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.6,
                 ),
+                itemBuilder: ((context, index) {
+                  Book book = _books[index];
+                  return Container(
+                    margin: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Image.network(
+                            book.imageLinks['thumbnail'] ?? '',
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            book.title,
+                            style: Theme.of(context).textTheme.titleSmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            book.authors.join(', &'),
+                            style: Theme.of(context).textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
               ),
             ),
           ],
