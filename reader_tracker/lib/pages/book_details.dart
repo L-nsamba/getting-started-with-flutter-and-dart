@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:reader_tracker/models/book.dart';
+import 'package:reader_tracker/utlis/book_details_arguments.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const new({super.key});
@@ -11,9 +13,35 @@ class BookDetailsScreen extends StatefulWidget {
 class _BookDetailsScreenState extends State<BookDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as BookDetailsArguments;
+    final Book book = args.itemBook;
+    final theme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Book Details'),
+      appBar: AppBar(title: Text(book.title)),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              if (book.imageLinks.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Image.network(
+                    book.imageLinks['thumbnail'] ?? '',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              Column(
+                children: [
+                  Text(book.title, style: theme.headlineSmall),
+                  Text(book.authors.join(', '), style: theme.labelLarge),
+                  Text('Published ${book.publishedDate}', style: theme.bodySmall),
+                  Text('Language ${book.language}', style: theme.bodySmall),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
