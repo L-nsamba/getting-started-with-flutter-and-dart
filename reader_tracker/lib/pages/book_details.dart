@@ -28,6 +28,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   padding: const EdgeInsets.all(18.0),
                   child: Image.network(
                     book.imageLinks['thumbnail'] ?? '',
+                    scale: 1.2,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -35,8 +36,41 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 children: [
                   Text(book.title, style: theme.headlineSmall),
                   Text(book.authors.join(', '), style: theme.labelLarge),
-                  Text('Published ${book.publishedDate}', style: theme.bodySmall),
+                  Text(
+                    'Published ${book.publishedDate}',
+                    style: theme.bodySmall,
+                  ),
                   Text('Language ${book.language}', style: theme.bodySmall),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(onPressed: () {}, child: Text('Save')),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.favorite),
+                        label: Text('Favorite'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+
+                  Text('Description', style: theme.titleMedium),
+
+                  const SizedBox(height: 5),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary
+                          .withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    child: Text(book.description),
+                  ),
                 ],
               ),
             ],
