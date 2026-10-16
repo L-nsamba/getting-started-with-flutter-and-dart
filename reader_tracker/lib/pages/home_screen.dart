@@ -20,11 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (query.trim().isEmpty) return;
 
     try {
-      debugPrint('Searching for: $query');
 
       final books = await network.searchBooks(query.trim());
-
-      debugPrint('Books received: ${books.length}');
 
       if (!mounted) return;
 
@@ -32,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
         _books = books;
       });
     } catch (e) {
-      debugPrint('Search failed: $e');
 
       if (!mounted) return;
 

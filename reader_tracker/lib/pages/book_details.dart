@@ -18,9 +18,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         ModalRoute.of(context)?.settings.arguments as BookDetailsArguments;
     final Book book = args.itemBook;
 
-    // Temporary debugging
-    debugPrint('Book: ${book.title}');
-    debugPrint('Image URL: ${book.thumbnailUrl}');
+
 
     final theme = Theme.of(context).textTheme;
     return Scaffold(
@@ -37,8 +35,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     scale: 1.2,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      debugPrint('Failed image URL: ${book.thumbnailUrl}');
-                      debugPrint('Image error: $error');
 
                       return const Icon(Icons.book, size: 80);
                     },
@@ -60,23 +56,34 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton(onPressed: () {}, child: Text('Save')),
+                      ElevatedButton(
+                        onPressed: () async {
+                          // saving book to db
+                          try {
+                            int savedInt = await DatabaseHelper.instance.insert(
+                              book,
+                            );
+                            SnackBar snackBar = SnackBar(
+                              content: Text("Book Saved $savedInt"),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } catch (e) {
+                            print("Error: $e");
+                          }
+                        },
+                        child: Text('Save'),
+                      ),
                       ElevatedButton.icon(
-                        onPressed: () {
-                          // async {
-                          //   // saving book to db
-                          //   try {
-                          //     int savedInt = await DatabaseHelper.instance.insert(
-                          //       book,
-                          //     );
-                          //     SnackBar snackBar = SnackBar(
-                          //       content: Text("Book Saved $savedInt"),
-                          //     );
-                          //     ScaffoldMessenger.of(context)
-                          //         .showSnackBar(snackBar);
-                          //   } catch (e) {
-                          //     print("Error: $e");
-                          //   }
+                        onPressed: () async {
+                          try {
+                            await DatabaseHelper.instance.readAllBooks().then(
+                              (books) => {
+                                for (var book in books)
+                                  {print("Title: ${book.title}")},
+                              },
+                            );
+                          } catch (e) {}
                         },
                         icon: Icon(Icons.favorite),
                         label: Text('Favorite'),
