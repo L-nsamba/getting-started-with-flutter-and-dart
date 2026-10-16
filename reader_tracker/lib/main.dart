@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reader_tracker/models/book.dart';
-import 'package:reader_tracker/networks/network.dart';
 import 'package:reader_tracker/networks/secrets.dart';
 import 'package:reader_tracker/pages/book_details.dart';
 import 'package:reader_tracker/pages/favorites_screen.dart';

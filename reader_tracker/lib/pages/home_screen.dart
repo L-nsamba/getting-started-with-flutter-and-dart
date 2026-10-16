@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:reader_tracker/components/gridview_widget.dart';
 import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/networks/network.dart';
-import 'package:reader_tracker/pages/book_details.dart';
-import 'package:reader_tracker/utlis/book_details_arguments.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

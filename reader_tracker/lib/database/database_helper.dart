@@ -46,11 +46,13 @@ class DatabaseHelper {
     ''');
   }
 
+// Add to Saved
   Future<int> insert(Book book) async {
     Database db = await instance.database;
     return await db.insert(_tableName, book.toJson());
   }
 
+// Get all
   Future<List<Book>> readAllBooks() async {
     Database db = await instance.database;
     var books = await db.query(_tableName);
@@ -59,6 +61,7 @@ class DatabaseHelper {
         : [];
   }
 
+// Favorite Status
   Future<int> toggleFavoriteStatus(String id, bool isFavorite) async {
     Database db = await instance.database;
     return await db.update(
@@ -69,8 +72,22 @@ class DatabaseHelper {
     );
   }
 
+// Delete 
   Future<int> deleteBook(String id) async {
     Database db = await instance.database;
     return await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+  }
+
+// Get Favorites
+  Future<List<Book>> getFavorites() async {
+    Database db = await instance.database;
+    var favBooks = await db.query(
+      _tableName,
+      where: 'favorite = ?',
+      whereArgs: [1],
+    );
+    return favBooks.isNotEmpty
+        ? favBooks.map((bookData) => Book.fromJsonDatabase(bookData)).toList()
+        : [];
   }
 }
