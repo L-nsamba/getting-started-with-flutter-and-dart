@@ -3,7 +3,7 @@ import 'package:reader_tracker/models/book.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const _databaseName = 'books_database.db';
+  static const _databaseName = 'book_database.db';
   static const _databaseVersion = 1;
   static const _tableName = 'books';
 
@@ -57,5 +57,20 @@ class DatabaseHelper {
     return books.isNotEmpty
         ? books.map((bookData) => Book.fromJsonDatabase(bookData)).toList()
         : [];
+  }
+
+  Future<int> toggleFavoriteStatus(String id, bool isFavorite) async {
+    Database db = await instance.database;
+    return await db.update(
+      _tableName,
+      {'favorite': isFavorite ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteBook(String id) async {
+    Database db = await instance.database;
+    return await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
   }
 }

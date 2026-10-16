@@ -18,8 +18,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         ModalRoute.of(context)?.settings.arguments as BookDetailsArguments;
     final Book book = args.itemBook;
 
-
-
     final theme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(title: Text(book.title)),
@@ -35,7 +33,6 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     scale: 1.2,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-
                       return const Icon(Icons.book, size: 80);
                     },
                   ),
@@ -75,16 +72,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         child: Text('Save'),
                       ),
                       ElevatedButton.icon(
-                        onPressed: () async {
-                          try {
-                            await DatabaseHelper.instance.readAllBooks().then(
-                              (books) => {
-                                for (var book in books)
-                                  {print("Title: ${book.title}")},
-                              },
-                            );
-                          } catch (e) {}
-                        },
+                        onPressed: () async {},
                         icon: Icon(Icons.favorite),
                         label: Text('Favorite'),
                       ),
