@@ -9,7 +9,7 @@ import 'package:reader_tracker/pages/saved_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Secrets.load(); // <-- load secrets.json here
+  await Secrets.load(); 
   runApp(const MyApp());
 }
 

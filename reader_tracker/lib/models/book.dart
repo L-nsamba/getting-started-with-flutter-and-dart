@@ -31,6 +31,16 @@ class Book {
     required this.infoLink,
   });
 
+  String? get thumbnailUrl {
+    final url = imageLinks['thumbnail'] ?? imageLinks['smallThumbnail'];
+
+    if (url == null || url.isEmpty) {
+      return null;
+    }
+
+    return url.replaceFirst('http://', 'https://');
+  }
+
   factory Book.fromJson(Map<String, dynamic> json) {
     var volumeInfo = json['volumeInfo'] ?? {};
     return Book(
@@ -45,12 +55,13 @@ class Book {
       industryIdentifiers: {
         for (var item
             in volumeInfo['industryIdentifiers'] as List<dynamic>? ?? [])
-          item['type'] as String? ?? '': item['identifier'] as String? ?? ''
+          item['type'] as String? ?? '': item['identifier'] as String? ?? '',
       },
       pageCount: volumeInfo['pageCount'] ?? 0,
       language: volumeInfo['language'] ?? '',
-      imageLinks: (volumeInfo['imageLinks'] as Map<String, dynamic>? ?? {})
-          .map((key, value) => MapEntry(key, value.toString())),
+      imageLinks: (volumeInfo['imageLinks'] as Map<String, dynamic>? ?? {}).map(
+        (key, value) => MapEntry(key, value.toString()),
+      ),
       previewLink: volumeInfo['previewLink'] ?? '',
       infoLink: volumeInfo['infoLink'] ?? '',
     );
@@ -65,9 +76,10 @@ class Book {
       'publisher': publisher,
       'publishedDate': publishedDate,
       'description': description,
-      'favorite': isFavorite ? 1 : 0,
-      'industryIdentifiers':
-          json.encode(industryIdentifiers), // Serialize map to a JSON string
+      // 'favorite': isFavorite ? 1 : 0,
+      'industryIdentifiers': json.encode(
+        industryIdentifiers,
+      ), // Serialize map to a JSON string
       'pageCount': pageCount,
       'language': language,
       'imageLinks': json.encode(imageLinks), // Serialize map to a JSON string
@@ -83,8 +95,8 @@ class Book {
       title: jsonObject['title'] as String,
       authors: jsonObject['authors'] is String
           ? (json.decode(jsonObject['authors']) as List)
-              .map((e) => e as String)
-              .toList()
+                .map((e) => e as String)
+                .toList()
           : [],
       publisher: jsonObject['publisher'] as String,
       publishedDate: jsonObject['publishedDate'] as String,
@@ -97,7 +109,7 @@ class Book {
       imageLinks: jsonObject['imageLinks'] is String
           ? Map.from(json.decode(jsonObject['imageLinks']))
           : {},
-      isFavorite: (jsonObject['favorite'] as int) == 1,
+      // isFavorite: (jsonObject['favorite'] as int) == 1,
       previewLink: jsonObject['previewLink'] as String,
       infoLink: jsonObject['infoLink'] as String,
     );

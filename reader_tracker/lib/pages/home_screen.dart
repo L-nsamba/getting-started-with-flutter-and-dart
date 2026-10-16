@@ -17,16 +17,33 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Book> _books = [];
 
   Future<void> _searchBooks(String query) async {
+    if (query.trim().isEmpty) return;
+
     try {
-      List<Book> books = await network.searchBooks(query);
+      debugPrint('Searching for: $query');
+
+      final books = await network.searchBooks(query.trim());
+
+      debugPrint('Books received: ${books.length}');
+
+      if (!mounted) return;
+
       setState(() {
         _books = books;
       });
-      // print("Books: ${books.toString()}");
     } catch (e) {
-      print("Didn't get anything...");
+      debugPrint('Search failed: $e');
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'The book service is temporarily unavailable. Please try again.',
+          ),
+        ),
+      );
     }
-    setState(() {});
   }
 
   @override
@@ -61,4 +78,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

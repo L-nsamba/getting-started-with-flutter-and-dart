@@ -3,10 +3,7 @@ import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/utlis/book_details_arguments.dart';
 
 class GridViewWidget extends StatelessWidget {
-  const new({
-    super.key,
-    required this._books,
-  });
+  const new({super.key, required this._books});
 
   final List<Book> _books;
 
@@ -47,7 +44,11 @@ class GridViewWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Image.network(
-                      book.imageLinks['thumbnail'] ?? '',
+                      book.thumbnailUrl ?? '',
+                      errorBuilder: (context, error, stackTrace) {
+                        debugPrint('Failed image URL: ${book.thumbnailUrl}');
+                        return const Icon(Icons.book, size: 50);
+                      },
                     ),
                   ),
                   Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:reader_tracker/database/database_helper.dart';
 import 'package:reader_tracker/models/book.dart';
 import 'package:reader_tracker/utlis/book_details_arguments.dart';
 
@@ -16,6 +17,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     final args =
         ModalRoute.of(context)?.settings.arguments as BookDetailsArguments;
     final Book book = args.itemBook;
+
+    // Temporary debugging
+    debugPrint('Book: ${book.title}');
+    debugPrint('Image URL: ${book.thumbnailUrl}');
+
     final theme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(title: Text(book.title)),
@@ -23,15 +29,24 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         child: Center(
           child: Column(
             children: [
-              if (book.imageLinks.isNotEmpty)
+              if (book.thumbnailUrl != null)
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Image.network(
-                    book.imageLinks['thumbnail'] ?? '',
+                    book.thumbnailUrl!,
                     scale: 1.2,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      debugPrint('Failed image URL: ${book.thumbnailUrl}');
+                      debugPrint('Image error: $error');
+
+                      return const Icon(Icons.book, size: 80);
+                    },
                   ),
-                ),
+                )
+              else
+                const Icon(Icons.book, size: 80),
+
               Column(
                 children: [
                   Text(book.title, style: theme.headlineSmall),
@@ -47,7 +62,22 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     children: [
                       ElevatedButton(onPressed: () {}, child: Text('Save')),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          // async {
+                          //   // saving book to db
+                          //   try {
+                          //     int savedInt = await DatabaseHelper.instance.insert(
+                          //       book,
+                          //     );
+                          //     SnackBar snackBar = SnackBar(
+                          //       content: Text("Book Saved $savedInt"),
+                          //     );
+                          //     ScaffoldMessenger.of(context)
+                          //         .showSnackBar(snackBar);
+                          //   } catch (e) {
+                          //     print("Error: $e");
+                          //   }
+                        },
                         icon: Icon(Icons.favorite),
                         label: Text('Favorite'),
                       ),
