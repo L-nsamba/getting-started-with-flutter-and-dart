@@ -28,7 +28,10 @@ class _SavedScreenState extends State<SavedScreen> {
                       Navigator.pushNamed(
                         context,
                         '/details',
-                        arguments: BookDetailsArguments(itemBook: book, isFromSavedScreen: true),
+                        arguments: BookDetailsArguments(
+                          itemBook: book,
+                          isFromSavedScreen: true,
+                        ),
                       );
                     },
                     child: Card(
@@ -52,15 +55,33 @@ class _SavedScreenState extends State<SavedScreen> {
 
                             ElevatedButton.icon(
                               onPressed: () async {
+                                final newFavoriteStatus = !book.isFavorite;
+
                                 await DatabaseHelper.instance
                                     .toggleFavoriteStatus(
                                       book.id,
-                                      !book.isFavorite,
-                                    )
-                                    .then((value) => print("Item Favorited!!"));
+                                      newFavoriteStatus,
+                                    );
+
+                                setState(() {
+                                  book.isFavorite = newFavoriteStatus;
+                                });
+
+                                print("Item Favorited!!");
                               },
-                              icon: Icon(Icons.favorite),
-                              label: Text('Add to Favorites'),
+                              icon: Icon(
+                                book.isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
+                                color: book.isFavorite
+                                    ? Colors.redAccent
+                                    : null,
+                              ),
+                              label: Text(
+                                book.isFavorite
+                                    ? 'Favorite'
+                                    : 'Add To Favorite',
+                              ),
                             ),
                           ],
                         ),
