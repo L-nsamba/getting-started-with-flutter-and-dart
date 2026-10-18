@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:water_intake/components/water_tile.dart';
 import 'package:water_intake/data/water_data.dart';
 import 'package:water_intake/model/water_model.dart';
 
@@ -34,6 +35,8 @@ class _HomePageState extends State<HomePage> {
     if (!context.mounted) {
       return; // if widget isn't mounted don't do anything
     }
+
+    clearWater();
   }
 
   void addWater() {
@@ -92,10 +95,7 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             final waterModel = value.waterDataList[index];
 
-            return ListTile(
-              title: Text(waterModel.amount.toString()),
-              subtitle: Text(waterModel.id!),
-            );
+            return WaterTile(waterModel: waterModel);
           },
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -105,5 +105,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  void clearWater() {
+    amountController.clear();
   }
 }
