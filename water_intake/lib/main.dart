@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       create: (context) => WaterData(),
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
         home: const HomePage(),
       ),
