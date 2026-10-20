@@ -109,7 +109,17 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           centerTitle: true,
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.map))],
-          title: Text('Water'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Weekly: ', style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                '${value.calculateWeeklyWaterIntake(value)} ml',
+                style: Theme.of(context).textTheme.titleMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
         floatingActionButton: FloatingActionButton(
