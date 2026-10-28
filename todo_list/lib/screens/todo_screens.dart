@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_list/firebase_services/todo_service.dart'; 
+import 'package:provider/provider.dart';
+import 'package:todo_list/firebase_services/auth_service.dart';
+import 'package:todo_list/firebase_services/todo_service.dart';
 
 class TodoList extends StatefulWidget {
   @override
@@ -74,7 +76,10 @@ class _TodoListState extends State<TodoList> {
               if (_editController.text.trim().isNotEmpty) {
                 try {
                   // STUDENT IMPLEMENTATION: Called TodoService.updateTodo
-                  await TodoService.updateTodo(todo.id, _editController.text.trim());
+                  await TodoService.updateTodo(
+                    todo.id,
+                    _editController.text.trim(),
+                  );
 
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context)
@@ -119,6 +124,16 @@ class _TodoListState extends State<TodoList> {
             onPressed: _deleteCompletedTodos,
             tooltip: 'Clear Completed',
           ),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              final authService = Provider.of<AuthService>(
+                context,
+                listen: false,
+              );
+              await authService.signOut();
+            },
+          ),
         ],
       ),
       body: Column(
@@ -145,7 +160,7 @@ class _TodoListState extends State<TodoList> {
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               // TODO 6: READ - Assigned the live stream from TodoService
-              stream: TodoService.getTodosStream(), 
+              stream: TodoService.getTodosStream(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
